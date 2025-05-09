@@ -1,15 +1,16 @@
-from django.http         import Http404
-from rest_framework.views   import APIView
+from django.http import Http404
+from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework         import status
-from .models               import Post
-from .serializers          import PostSerializer
+from rest_framework import status
+from .models import Post
+from .serializers import PostSerializer
+
 
 class PostListCreate(APIView):
     """ GET list of posts  &  POST a new post """
 
     def get(self, request):
-        posts     = Post.objects.all().order_by('-created_at')
+        posts = Post.objects.all().order_by('-created_at')
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
@@ -42,4 +43,3 @@ class PostDetailUpdate(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
